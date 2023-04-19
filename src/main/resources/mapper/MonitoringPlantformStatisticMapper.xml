@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rz.manuscript.mapper.MonitoringPlantformStatisticMapper">
+    <select id="getByCategoryId" parameterType="int"
+            resultType="com.rz.manuscript.pojo.vo.MonitoringPlantformStatisticVo">
+    SELECT mps.id,mps.plantform_id,mps.is_reaching_standard,mpc.name AS plantform_name,pc.name as category_name
+  FROM monitoring_plantform_statistic mps
+  LEFT JOIN monitoring_plantform_config mpc
+    ON mps.plantform_id= mpc.id
+  LEFT JOIN project_category pc
+    ON mpc.category_id = pc.id
+  WHERE mpc.category_id=#{id}
+    </select>
+</mapper>

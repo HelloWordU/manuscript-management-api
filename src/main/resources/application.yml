@@ -1,0 +1,14 @@
+server:
+  port: 9105
+  tomcat:
+    max-http-form-post-size: -1
+spring:
+  application:
+    name: manuscript
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: -1
+      max-request-size: -1
+  profiles:
+    active: dev

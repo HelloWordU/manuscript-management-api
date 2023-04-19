@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rz.manuscript.mapper.OrderMapper">
+    <select id="getList" parameterType="com.rz.manuscript.pojo.vo.OrderGetListRequest"
+            resultType="com.rz.manuscript.pojo.vo.OrderVo">
+        SELECT op.*,p.name AS project_name,s.real_name AS supplier_name FROM order_publish op
+        LEFT JOIN project p ON op.project_id = p.id
+        LEFT JOIN supplier s ON op.supplier_id=s.id
+        <where>
+            <if test="projectId!=null and projectId>0">
+                and op.project_id=#{projectId}
+            </if>
+            <if test="supplierId!=null and supplierId>0">
+                and op.supplier_id=#{supplierId}
+            </if>
+            <if test="isBeginOrder!=null">
+                and op.is_begin_order=#{isBeginOrder}
+            </if>
+            <if test="isComplete!=null">
+                and op.is_complete=#{isComplete}
+            </if>
+        </where>
+        order by id desc
+        LIMIT  #{startIndex},#{pageSize}
+
+    </select>
+
+    <select id="getListTotal" parameterType="com.rz.manuscript.pojo.vo.OrderGetListRequest"
+            resultType="long">
+        SELECT count(1) FROM order_publish op
+        LEFT JOIN project p ON op.project_id = p.id
+        LEFT JOIN supplier s ON op.supplier_id=s.id
+        <where>
+            <if test="projectId!=null and projectId>0">
+                and op.project_id=#{projectId}
+            </if>
+            <if test="supplierId!=null and supplierId>0">
+                and op.supplier_id=#{supplierId}
+            </if>
+            <if test="isBeginOrder!=null">
+                and op.is_begin_order=#{isBeginOrder}
+            </if>
+            <if test="isComplete!=null">
+                and op.is_complete=#{isComplete}
+            </if>
+        </where>
+    </select>
+
+    <select id="getSupplierList" parameterType="com.rz.manuscript.pojo.vo.OrderGetListRequest"
+            resultType="com.rz.manuscript.pojo.vo.OrderVo">
+        SELECT op.*,p.name AS project_name,s.real_name AS supplier_name FROM order_publish op
+        LEFT JOIN project p ON op.project_id = p.id
+        LEFT JOIN supplier s ON op.supplier_id=s.id
+        <where>
+            <if test="projectId!=null and projectId>0">
+                and op.project_id=#{projectId}
+            </if>
+            <if test="isBeginOrder!=null">
+                and op.is_begin_order=#{isBeginOrder}
+            </if>
+            <if test="isComplete!=null">
+                and op.is_complete=#{isComplete}
+            </if>
+            <if test="userId!=null">
+                and op.supplier_id=#{userId}
+            </if>
+        </where>
+        order by id desc
+        LIMIT  #{startIndex},#{pageSize}
+
+    </select>
+
+    <select id="getSupplierListTotal" parameterType="com.rz.manuscript.pojo.vo.OrderGetListRequest"
+            resultType="long">
+        SELECT count(1) FROM order_publish op
+        LEFT JOIN project p ON op.project_id = p.id
+        LEFT JOIN supplier s ON op.supplier_id=s.id
+        <where>
+            <if test="projectId!=null and projectId>0">
+                and op.project_id=#{projectId}
+            </if>
+            <if test="isBeginOrder!=null">
+                and op.is_begin_order=#{isBeginOrder}
+            </if>
+            <if test="isComplete!=null">
+                and op.is_complete=#{isComplete}
+            </if>
+            <if test="userId!=null">
+                and op.supplier_id=#{userId}
+            </if>
+        </where>
+    </select>
+</mapper>

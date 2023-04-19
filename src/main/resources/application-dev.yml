@@ -1,0 +1,28 @@
+server:
+  port: 9105
+spring:
+  application:
+    name: manuscript
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+#      url: jdbc:mysql://192.168.1.207:3306/smart_report?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+#      username: root
+#      password: System@123
+      url: jdbc:mysql://182.61.26.201:3306/manuscript?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: Snow2021$
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rz.manuscript.mapper.ManuscriptMapper">
+    <select id="getList" parameterType="com.rz.manuscript.pojo.vo.GetManuscriptRequest"
+            resultType="com.rz.manuscript.pojo.vo.ManuscriptVo">
+SELECT m.*,p.name project,t.name  type, p1.name product FROM manuscript m
+LEFT JOIN project p
+ON m.project_id=p.id
+LEFT JOIN manuscript_type t
+ON m.type_id = t.id
+LEFT JOIN project_product p1
+ON m.product_id = p1.id
+   <where>
+       <if test="projectId!=null and projectId>0">
+           and p.id =#{projectId}
+       </if>
+       <if test="title!=null and title!=''">
+           and m.title like '%${title}%'
+       </if>
+       <if test="product!=null and product!=0">
+           and p1.id=#{product}
+       </if>
+       <if test="type!=null and type!=0">
+           and t.id=#{type}
+       </if>
+       <if test="checkState!=null and checkState!=-1">
+           and m.check_state=#{checkState}
+       </if>
+   </where>
+    order by id desc
+    LIMIT  #{startIndex},#{pageSize}
+
+    </select>
+
+    <select id="getTotal" parameterType="com.rz.manuscript.pojo.vo.GetManuscriptRequest"
+            resultType="int">
+        SELECT count(1) FROM manuscript m
+        LEFT JOIN project p
+        ON m.project_id=p.id
+        LEFT JOIN manuscript_type t
+        ON m.type_id = t.id
+        LEFT JOIN project_product p1
+        ON m.product_id = p1.id
+        <where>
+            <if test="projectId!=null and projectId>0">
+                and p.id =#{projectId}
+            </if>
+            <if test="title!=null and title!=''">
+                and m.title like '%${title}%'
+            </if>
+            <if test="product!=null and product!=0">
+                and p1.id=#{product}
+            </if>
+            <if test="type!=null and type!=0">
+                and t.id=#{type}
+            </if>
+            <if test="checkState!=null and checkState!=-1">
+                and m.check_state=#{checkState}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCustomerList" parameterType="com.rz.manuscript.pojo.vo.GetManuscriptRequest"
+                         resultType="com.rz.manuscript.pojo.vo.ManuscriptVo">
+    SELECT m.*,p.name project,t.name  type, p1.name product FROM manuscript m
+    LEFT JOIN project p
+    ON m.project_id=p.id
+    LEFT JOIN manuscript_type t
+    ON m.type_id = t.id
+    LEFT JOIN project_product p1
+    ON m.product_id = p1.id
+    <where>
+       <if test="checkState==null or checkState==-1">
+           and  m.check_state!=0
+       </if>
+        <if test="project!=null and project!=''">
+            and p.name like '%${project}%'
+        </if>
+        <if test="title!=null and title!=''">
+            and m.title like '%${title}%'
+        </if>
+        <if test="product!=null and product!=0">
+            and p1.id=#{product}
+        </if>
+        <if test="type!=null and type!=0">
+            and t.id=#{type}
+        </if>
+        <if test="checkState!=null and checkState!=-1">
+            and m.check_state=#{checkState}
+        </if>
+    </where>
+        order by id desc
+        LIMIT  #{startIndex},#{pageSize}
+</select>
+    <select id="getCustomerListTotal" parameterType="com.rz.manuscript.pojo.vo.GetManuscriptRequest"
+            resultType="int">
+        SELECT count(1) FROM manuscript m
+        LEFT JOIN project p
+        ON m.project_id=p.id
+        LEFT JOIN manuscript_type t
+        ON m.type_id = t.id
+        LEFT JOIN project_product p1
+        ON m.product_id = p1.id
+        <where>
+            <if test="checkState==null or checkState==-1">
+                and  m.check_state!=0
+            </if>
+            <if test="project!=null and project!=''">
+                and p.name like '%${project}%'
+            </if>
+            <if test="title!=null and title!=''">
+                and m.title like '%${title}%'
+            </if>
+            <if test="product!=null and product!=0">
+                and p1.id=#{product}
+            </if>
+            <if test="type!=null and type!=0">
+                and t.id=#{type}
+            </if>
+            <if test="checkState!=null and checkState!=-1">
+                and m.check_state=#{checkState}
+            </if>
+        </where>
+    </select>
+</mapper>

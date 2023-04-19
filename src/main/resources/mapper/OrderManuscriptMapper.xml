@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rz.manuscript.mapper.OrderManuscriptMapper">
+    <select id="getOrderManuscriptList" parameterType="int"
+            resultType="com.rz.manuscript.pojo.vo.OrderManuscriptVo">
+        SELECT om.*,m.title,m.project_id,m.auth,m.type_id,m.product_id,m.char_count,m.file_name,m.url,m.shot_screen_url,m.save_path  FROM order_manuscript om
+        LEFT JOIN manuscript m ON om.manuscript_id = m.id
+        <where>
+            <if test="orderId!=null and orderId>0">
+                and om.order_id=#{orderId}
+            </if>
+        </where>
+        order by m.id desc
+    </select>
+</mapper>
