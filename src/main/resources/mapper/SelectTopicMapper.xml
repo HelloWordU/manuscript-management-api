@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rz.manuscript.mapper.SelectTopicMapper">
+    <select id="getList" parameterType="com.rz.manuscript.pojo.vo.SelectTopicGetListRequest"
+            resultType="com.rz.manuscript.pojo.vo.SelectTopicVo">
+        SELECT tst.*,pp.name AS product_name from t_select_topic tst
+        LEFT JOIN project_product pp ON tst.product_id = pp.id
+        LEFT JOIN project p ON pp.project_id =p.id
+        LEFT JOIN  manuscript_type mt ON tst.type_id = mt.id
+        <where>
+            <if test="selectType!=null">
+                and tst.is_selected = #{selectType}
+            </if>
+            <if test="title!=null">
+                and tst.title like concat('%',#{title},'%')
+            </if>
+            <!-- todo type_id 类型如何查询？ -->
+            <if test="projectName!=null">
+                and p.name like concat('%',#{projectName},'%')
+            </if>
+            <if test="productName!=null">
+                and pp.name like concat('%',#{productName},'%')
+            </if>
+            <if test="charCountLimit > 0">
+                and tst.char_count >= #{charCountLimit}
+            </if>
+            <if test="charCountMax > 0">
+                <![CDATA[and tst.char_count <= #{charCountMax}]]>
+            </if>
+        </where>
+        order by id desc
+        LIMIT  #{startIndex},#{pageSize}
+
+    </select>
+</mapper>
