@@ -1,13 +1,40 @@
 package com.rz.manuscript.controller;
 
+import com.rz.manuscript.common.ResultEntity;
+import com.rz.manuscript.common.ResultEntityList;
+import com.rz.manuscript.pojo.vo.WriteSelectedTopicGetListRequest;
+import com.rz.manuscript.pojo.vo.WriteSelectedTopicVo;
+import com.rz.manuscript.service.IWriteSelectedTopicService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/writeSelectedTopic")
 @Slf4j
-@Api(value = "撰写选题")
+@Api(tags = "撰写选题")
 public class WriteSelectedTopicController {
+    @Resource
+    private IWriteSelectedTopicService iWriteSelectTopicService;
+
+    @PostMapping("/getList")
+    @ApiOperation(value = "获取范文列表-分页")
+    public ResultEntityList<WriteSelectedTopicVo> getSelectTopic(@RequestBody WriteSelectedTopicGetListRequest request) {
+        List<WriteSelectedTopicVo> resData = iWriteSelectTopicService.getList(request);
+        ResultEntityList<WriteSelectedTopicVo> res = new ResultEntityList<>(200, resData, "获取成功");
+        return res;
+    }
+
+    @PostMapping("/getById")
+    @ApiOperation(value = "获取范文")
+    public ResultEntity<WriteSelectedTopicVo> getSelectTopic(@RequestParam @ApiParam(value = "范文id",required = true) int id) {
+        WriteSelectedTopicVo resData = iWriteSelectTopicService.getById(id);
+        ResultEntity<WriteSelectedTopicVo> res = new ResultEntity<>(200, resData, "获取成功");
+        return res;
+    }
 }

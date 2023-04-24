@@ -25,7 +25,7 @@ public class SelectTopicController {
     @Resource
     private ISelectTopicService iSelectTopicService;
 
-    @PostMapping("/get")
+    @PostMapping("/getList")
     @ApiOperation(value = "获取所有热文选题-分页")
     public ResultEntityList<SelectTopicVo> getSelectTopic(@RequestBody SelectTopicGetListRequest request) {
         List<SelectTopicVo> resData = iSelectTopicService.getList(request);
