@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/menu")
 @Slf4j
-@Api(value = "结算")
+@Api(tags = "菜单")
 public class MenuController {
 
     @Resource

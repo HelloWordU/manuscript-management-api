@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/projectProduct")
-@Api(value = "项目关键词")
+@Api(tags = "项目关键词")
 public class ProjectProductController {
 
     @Resource

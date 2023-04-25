@@ -33,7 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/monitoringPlantformArticle")
 @Slf4j
-@Api("监控平台文章")
+@Api(tags = "监控平台文章")
 public class MonitoringPlantformArticleController {
 
     @Resource

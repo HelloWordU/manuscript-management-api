@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/netHot")
 @Slf4j
-@Api(value = "网络热搜")
+@Api(tags = "网络热搜")
 public class NetHotController {
 }

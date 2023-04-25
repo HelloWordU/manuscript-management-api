@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/manuscriptType")
 @Slf4j
-@Api(value = "关键词热词")
+@Api(tags = "稿件类型")
 public class ManuscriptTypeController {
 
     @Resource

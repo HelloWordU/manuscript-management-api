@@ -35,7 +35,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/monitoringReachingStandardCount")
 @Slf4j
-@Api("监控达标")
+@Api(tags ="监控达标")
 public class MonitoringReachingStandardCountController {
 
     @Resource

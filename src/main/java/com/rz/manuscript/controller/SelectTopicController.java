@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/selectTopic")
 @Slf4j
-@Api(value = "热文选题")
+@Api(tags = "热文选题")
 public class SelectTopicController {
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/monitoringPlantformStatistic")
 @Slf4j
-@Api("监控平台统计")
+@Api(tags ="监控平台统计")
 public class MonitoringPlantformStatisticController {
 
     @Resource
