@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/examineSettle")
 @Slf4j
-@Api(value = "结算")
+@Api(tags = "结算")
 public class ExamineSettleController {
 
     @Resource

@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
-@Api(tags = "用户")
+@Api(tags = "客户")
 public class CustomerController {
     @Resource
     private HttpServletRequest request;

@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/supplier")
-@Api(tags = "用户")
+@Api(tags = "供应商")
 public class SupplierController {
     @Resource
     private HttpServletRequest request;

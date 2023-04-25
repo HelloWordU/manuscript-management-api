@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-@Api(value = "项目关键词")
+@Api(tags = "项目关键词")
 public class CategoryController {
 
     @Resource

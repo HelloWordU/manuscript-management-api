@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @Slf4j
-@Api(value = "订单")
+@Api(tags  = "订单")
 public class OrderController {
 
     @Resource

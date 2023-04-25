@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/monitoringPlantform")
 @Slf4j
-@Api("监控平台配置")
+@Api(tags ="监控平台配置")
 public class MonitoringPlantformConfigController {
 
     @Resource
