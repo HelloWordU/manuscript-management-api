@@ -23,9 +23,9 @@ public class WriteSelectedTopic implements Serializable  {
     private Integer charCount;
     private String url;
     private Integer typeId;
-    private Boolean is_complete;
+    private Boolean isComplete;
     private String content;
-    private Integer toptic_id;
+    private Integer topticId;
 
     // getter and setter methods for all fields
 }
