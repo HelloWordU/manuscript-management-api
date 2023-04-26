@@ -3,10 +3,31 @@
 <mapper namespace="com.rz.manuscript.mapper.WriteSelectedTopicMapper">
     <select id="getList" parameterType="com.rz.manuscript.pojo.vo.WriteSelectedTopicGetListRequest"
             resultType="com.rz.manuscript.pojo.vo.WriteSelectedTopicVo">
-        SELECT twst.* from t_write_selected_topic twst
+        SELECT twst.*,pp.name AS product_name from t_write_selected_topic twst
+        LEFT JOIN project_product pp ON twst.product_id = pp.id
+        LEFT JOIN project p ON pp.project_id =p.id
+        LEFT JOIN  manuscript_type mt ON twst.type_id = mt.id
         <where>
             <if test="isComplete!=null">
                 and twst.is_complete = #{isComplete}
+            </if>
+            <if test="title!=null">
+                and tst.title like concat('%',#{title},'%')
+            </if>
+            <if test="typeId!=null">
+                and twst.type_id = #{typeId}
+            </if>
+            <if test="projectName!=null">
+                and p.name like concat('%',#{projectName},'%')
+            </if>
+            <if test="productName!=null">
+                and pp.name like concat('%',#{productName},'%')
+            </if>
+            <if test="charCountLimit > 0">
+                and tst.char_count >= #{charCountLimit}
+            </if>
+            <if test="charCountMax > 0">
+                <![CDATA[and tst.char_count <= #{charCountMax}]]>
             </if>
         </where>
         order by id desc
@@ -14,7 +35,9 @@
     </select>
     <select id="getById" parameterType="int"
             resultType="com.rz.manuscript.pojo.vo.WriteSelectedTopicVo">
-        SELECT twst.* from t_write_selected_topic twst
+        SELECT twst.*,pp.name AS product_name from t_write_selected_topic twst
+        LEFT JOIN project_product pp ON twst.product_id = pp.id
+        LEFT JOIN project p ON pp.project_id =p.id
         <where>
             <if test="id!=null">
                 and twst.id = #{id}

@@ -13,6 +13,12 @@ public class WriteSelectedTopicVo {
     @ApiModelProperty("范文字数")
     private Integer charCount;
 
+    @ApiModelProperty("产品名称")
+    private String productName;
+
     @ApiModelProperty("范文内容")
     private String content;
+
+    @ApiModelProperty("是否完成")
+    private boolean isComplete;
 }

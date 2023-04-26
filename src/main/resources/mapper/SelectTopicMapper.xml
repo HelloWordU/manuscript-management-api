@@ -14,7 +14,9 @@
             <if test="title!=null">
                 and tst.title like concat('%',#{title},'%')
             </if>
-            <!-- todo type_id 类型如何查询？ -->
+            <if test="typeId!=null">
+                and tst.type_id = #{typeId}
+            </if>
             <if test="projectName!=null">
                 and p.name like concat('%',#{projectName},'%')
             </if>
