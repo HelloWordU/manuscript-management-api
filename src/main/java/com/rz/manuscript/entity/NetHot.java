@@ -21,6 +21,7 @@ public class NetHot implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Integer type;
+    private Integer hotValue;
     private Integer sortIndex;
     private String hotWord;
     private String linkUrl;
