@@ -13,14 +13,12 @@ public class SelectTopicGetListRequest {
     @ApiModelProperty("热文选题标题")
     private String title;
 
-    @ApiModelProperty("热文选题类型")
-    private Integer typeId;
+    @ApiModelProperty("行业")
+    private String industry;
 
-    @ApiModelProperty("品牌")
-    private String projectName;
+    @ApiModelProperty("来源")
+    private String source;
 
-    @ApiModelProperty("产品名称")
-    private String productName;
 
     @ApiModelProperty("最小字数")
     private Integer charCountLimit;

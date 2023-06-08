@@ -2,6 +2,7 @@ package com.rz.manuscript.controller;
 
 import com.rz.manuscript.common.ResultEntity;
 import com.rz.manuscript.common.ResultEntityList;
+import com.rz.manuscript.pojo.request.GetContentKeysRequest;
 import com.rz.manuscript.pojo.vo.WriteSelectedTopicGetListRequest;
 import com.rz.manuscript.pojo.vo.WriteSelectedTopicVo;
 import com.rz.manuscript.service.IWriteSelectedTopicService;
@@ -37,4 +38,13 @@ public class WriteSelectedTopicController {
         ResultEntity<WriteSelectedTopicVo> res = new ResultEntity<>(200, resData, "获取成功");
         return res;
     }
+
+    @PostMapping("/getContentKeys")
+    @ApiOperation(value = "获取文章内容分词")
+    public ResultEntityList<String> getContentKeys(@RequestBody GetContentKeysRequest request) {
+        List<String> resData = iWriteSelectTopicService.getContentKeys(request);
+        ResultEntityList<String> res = new ResultEntityList<>(200, resData, "获取成功");
+        return res;
+    }
+
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -25,7 +26,8 @@ public class WriteSelectedTopic implements Serializable  {
     private Integer typeId;
     private Boolean isComplete;
     private String content;
-    private Integer topticId;
+    private Integer topicId;
+    private Date lastModifyDate;
 
     // getter and setter methods for all fields
 }

@@ -9,6 +9,10 @@ import java.util.Date;
 @Data
 @ApiModel("热文选题视图")
 public class SelectTopicVo {
+
+    @ApiModelProperty("id")
+    private Integer id;
+
     @ApiModelProperty("热文选题标题")
     private String title;
 
@@ -21,6 +25,15 @@ public class SelectTopicVo {
     @ApiModelProperty("热文选题来源")
     private String source;
 
+    @ApiModelProperty("行业")
+    private String industry;
+
+    @ApiModelProperty("链接地址")
+    private String url;
+
     @ApiModelProperty("发布时间")
     private Date publishTime;
+
+    @ApiModelProperty("是否已选")
+    private Boolean isSelected;
 }

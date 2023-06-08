@@ -12,5 +12,5 @@ import java.util.List;
 public interface WriteSelectedTopicMapper extends BaseMapper<WriteSelectedTopic> {
     List<WriteSelectedTopicVo> getList(WriteSelectedTopicGetListRequest request);
 
-    WriteSelectedTopicVo getById(int id);
+    WriteSelectedTopicVo getVoById(int id);
 }

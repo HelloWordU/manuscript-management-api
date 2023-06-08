@@ -28,4 +28,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public List<UserVo> getAllUser() {
         return userMapper.getAllUser();
     }
+
+    @Override
+    public List<Long> getUserProjectList(Integer userId) {
+        return userMapper.getUserProjectList(userId);
+    }
 }

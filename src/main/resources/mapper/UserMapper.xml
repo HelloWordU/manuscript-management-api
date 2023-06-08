@@ -11,4 +11,8 @@ ON ugr.group_id=ug.id
 WHERE u.name !='admin'
 GROUP BY u.id
     </select>
+    <select id="getUserProjectList" resultType="java.lang.Long">
+        select DISTINCT  project_id from group_project_relation gpr
+        where group_id in (select group_id from  user_group_relation ugr where ugr.user_id=#{userId})
+    </select>
 </mapper>

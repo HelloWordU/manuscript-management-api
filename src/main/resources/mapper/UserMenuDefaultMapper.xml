@@ -2,12 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rz.manuscript.mapper.UserMenuDefaultMapper">
     <select id="getUserMenuList" parameterType="int" resultType="com.rz.manuscript.pojo.vo.MenuVo">
-        SELECT umd.*,m.* FROM user_menu_default umd
+        SELECT m.* FROM user_menu_default umd
         LEFT JOIN menu m ON umd.menu_id=m.id
         <where>
             <if test="userType!=null and userType>0">
                 and umd.user_type =#{userType}
             </if>
         </where>
+        order by m.sort
     </select>
 </mapper>

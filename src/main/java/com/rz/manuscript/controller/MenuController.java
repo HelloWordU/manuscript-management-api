@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -70,14 +67,14 @@ public class MenuController {
             mappingRes = iUserMenuDefaultService.getUserMenuList(UserTypeEnum.员工.getCode());
         }
         Map<Integer, MenuVo> idCollect = mappingRes.stream().collect(Collectors.toMap(MenuVo::getId, item -> item));
-        Map<Integer, List<MenuVo>> collect = mappingRes.stream().collect(Collectors.groupingBy(MenuVo::getParentId));
+        Map<Integer, List<MenuVo>> collect = mappingRes.stream().sorted(Comparator.comparing(i->i.getSort())).collect(Collectors.groupingBy(MenuVo::getParentId));
 
         for (Integer key : collect.keySet()) {
             if (idCollect.containsKey(key)) {
                 idCollect.get(key).setChild(collect.get(key));
             }
         }
-        for (Integer key : idCollect.keySet()) {
+        for (Integer key : mappingRes.stream().map(i->i.getId()).collect(Collectors.toList())) {
             if (idCollect.get(key).getParentId() == 0) {
                 resData.add(idCollect.get(key));
             }

@@ -29,6 +29,7 @@ public class SelectTopic implements Serializable {
     private Date publishTime;
     private Integer typeId;
     private Boolean isSelected;
+    private String industry;
 
     // getter and setter methods for all fields
 }

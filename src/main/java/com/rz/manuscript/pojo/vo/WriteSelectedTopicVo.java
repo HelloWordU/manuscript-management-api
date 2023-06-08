@@ -4,9 +4,18 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @ApiModel("范文列表视图")
 public class WriteSelectedTopicVo {
+
+    @ApiModelProperty("id")
+    private Integer id;
+
+    @ApiModelProperty("原文标题")
+    private String originalTitle;
+
     @ApiModelProperty("范文标题")
     private String title;
 
@@ -21,4 +30,8 @@ public class WriteSelectedTopicVo {
 
     @ApiModelProperty("是否完成")
     private boolean isComplete;
+
+    @ApiModelProperty("最后更新时间")
+    private Date lastModifyDate;
+
 }

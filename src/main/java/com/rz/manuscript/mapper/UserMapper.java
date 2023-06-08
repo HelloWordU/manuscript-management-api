@@ -19,4 +19,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     List<UserVo> getAllUser();
+
+    List<Long> getUserProjectList(Integer userId);
 }

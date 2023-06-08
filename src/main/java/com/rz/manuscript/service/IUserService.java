@@ -17,4 +17,6 @@ import java.util.List;
 public interface IUserService extends IService<User> {
 
     List<UserVo> getAllUser();
+
+    List<Long> getUserProjectList(Integer userId);
 }

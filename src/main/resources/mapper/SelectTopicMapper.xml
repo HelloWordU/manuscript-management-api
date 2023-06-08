@@ -3,35 +3,40 @@
 <mapper namespace="com.rz.manuscript.mapper.SelectTopicMapper">
     <select id="getList" parameterType="com.rz.manuscript.pojo.vo.SelectTopicGetListRequest"
             resultType="com.rz.manuscript.pojo.vo.SelectTopicVo">
-        SELECT tst.*,pp.name AS product_name from t_select_topic tst
-        LEFT JOIN project_product pp ON tst.product_id = pp.id
-        LEFT JOIN project p ON pp.project_id =p.id
-        LEFT JOIN  manuscript_type mt ON tst.type_id = mt.id
+        SELECT id, title, auth, product_id,
+        char_count, url, publish_time,
+        type_id,is_selected,source,industry
+        from t_select_topic tst
         <where>
-            <if test="selectType!=null">
-                and tst.is_selected = #{selectType}
-            </if>
-            <if test="title!=null">
-                and tst.title like concat('%',#{title},'%')
-            </if>
-            <if test="typeId!=null">
-                and tst.type_id = #{typeId}
-            </if>
-            <if test="projectName!=null">
-                and p.name like concat('%',#{projectName},'%')
-            </if>
-            <if test="productName!=null">
-                and pp.name like concat('%',#{productName},'%')
-            </if>
-            <if test="charCountLimit > 0">
-                and tst.char_count >= #{charCountLimit}
-            </if>
-            <if test="charCountMax > 0">
-                <![CDATA[and tst.char_count <= #{charCountMax}]]>
-            </if>
+            <trim prefixOverrides="and">
+                <if test="selectType!=null">
+                   <if test="selectType==false">
+                       and (tst.is_selected = #{selectType}  or tst.is_selected is null )
+                   </if>
+                    <if test="selectType==true">
+                        and tst.is_selected = #{selectType}
+                    </if>
+
+                </if>
+                <if test="title!=null and title!=''">
+                    and tst.title like concat('%',#{title},'%')
+                </if>
+                <if test="industry!=null and industry!=''">
+                    and tst.industry like concat('%',#{industry},'%')
+                </if>
+                <if test="source!=null and source!=''">
+                    and tst.source like concat('%',#{source},'%')
+                </if>
+                <if test="charCountLimit!=null and charCountLimit > 0">
+                    and tst.char_count >= #{charCountLimit}
+                </if>
+                <if test="charCountMax!=null and charCountMax > 0">
+                    <![CDATA[and tst.char_count <= #{charCountMax}]]>
+                </if>
+            </trim>
         </where>
         order by id desc
-        LIMIT  #{startIndex},#{pageSize}
+        LIMIT #{startIndex},#{pageSize}
 
     </select>
 </mapper>
