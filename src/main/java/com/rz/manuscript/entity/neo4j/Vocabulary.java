@@ -28,11 +28,11 @@ public class Vocabulary {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vocabulary person = (Vocabulary) o;
-        return  Objects.equals(name, person.name) ;
+        return  Objects.equals(name, person.name)  && Objects.equals(nodeType, person.nodeType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name,nodeType);
     }
 }

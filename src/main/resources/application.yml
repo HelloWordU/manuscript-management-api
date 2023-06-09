@@ -10,5 +10,10 @@ spring:
       enabled: true
       max-file-size: -1
       max-request-size: -1
+  data:
+    neo4j:
+      username: neo4j
+      password: root
+      uri: neo4j://109.244.159.194:7687
   profiles:
     active: dev

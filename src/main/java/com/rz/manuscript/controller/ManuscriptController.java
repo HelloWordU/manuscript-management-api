@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/manuscript")
-@Api(tags = "项目")
+@Api(tags = "稿件")
 @Slf4j
 public class ManuscriptController {
 
