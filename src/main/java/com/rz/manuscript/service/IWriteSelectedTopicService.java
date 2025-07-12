@@ -12,7 +12,9 @@ import java.util.List;
 @Repository
 public interface IWriteSelectedTopicService extends IService<WriteSelectedTopic> {
     List<WriteSelectedTopicVo> getList(WriteSelectedTopicGetListRequest request);
-    WriteSelectedTopicVo getById(int id);
+    WriteSelectedTopicVo getVoById(int id);
 
     List<String> getContentKeys(GetContentKeysRequest request);
+
+    List<String> getContentCategory(GetContentKeysRequest request);
 }

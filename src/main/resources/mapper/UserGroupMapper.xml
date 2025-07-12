@@ -5,7 +5,7 @@
     SELECT ug.id,ug.name, GROUP_CONCAT(DISTINCT u.real_name) AS user_name,GROUP_CONCAT(DISTINCT p.name) AS project_name
  FROM user_group ug
 LEFT JOIN user_group_relation ugr ON ug.id= ugr.group_id
-LEFT JOIN user u ON ugr.user_id = u.id
+LEFT JOIN t_user u ON ugr.user_id = u.id
 LEFT JOIN group_project_relation grp ON ug.id = grp.group_id
 LEFT JOIN project p ON grp.project_id =p.id
 GROUP BY ug.id
@@ -26,7 +26,7 @@ GROUP BY ug.id
     <select id="getGroupUser" parameterType="int"
             resultType="com.rz.manuscript.pojo.vo.GroupUserVo">
         SELECT ugr.*,u.real_name AS user_name FROM user_group_relation ugr
-        LEFT JOIN user u  ON ugr.user_id=u.id
+        LEFT JOIN t_user u  ON ugr.user_id=u.id
         <where>
             <if test="groupId!=null and groupId>0">
                 and ugr.group_id=#{groupId}

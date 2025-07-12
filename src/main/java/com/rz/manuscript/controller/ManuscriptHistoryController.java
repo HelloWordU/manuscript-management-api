@@ -59,7 +59,7 @@ public class ManuscriptHistoryController {
 ////        }
 ////        Integer companyId = ((User) cacheInfo.getValue()).getCompanyId();
 //        LambdaQueryWrapper<Manuscript> wrapper = new LambdaQueryWrapper<>();
-//        Manuscript one = iManuscriptService.getById(id);
+//        Manuscript one = iManuscriptService.getVoById(id);
 //        ManuscriptVo res = new ManuscriptVo();
 //        BeanUtil.copyProperties(one, res);
 //        return new ResultEntity<>(200, res, "获取成功");

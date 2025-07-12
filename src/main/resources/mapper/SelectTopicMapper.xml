@@ -33,6 +33,9 @@
                 <if test="charCountMax!=null and charCountMax > 0">
                     <![CDATA[and tst.char_count <= #{charCountMax}]]>
                 </if>
+                <if test="userId!=null">
+                   and tst.create_user= #{userId}
+                </if>
             </trim>
         </where>
         order by id desc

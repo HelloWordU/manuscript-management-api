@@ -11,4 +11,12 @@
         </where>
         order by m.sort
     </select>
+    <select id="getUserMenuListWithRole" resultType="com.rz.manuscript.pojo.vo.MenuVo">
+        SELECT distinct m.* from menu m where m.id in (
+            select menu_id from t_role_menu_mapping where role_id in (
+                select role_id from t_user_role_mapping where user_id = #{userId}
+                )
+            )
+        order by m.sort
+    </select>
 </mapper>

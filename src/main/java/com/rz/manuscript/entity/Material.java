@@ -43,6 +43,9 @@ public class Material implements Serializable {
     @ApiModelProperty("文件路径")
     private String fileUrl;
 
+    @ApiModelProperty("文件原始名称")
+    private String originName;
+
     @ApiModelProperty("创建时间")
     private Date createTime;
 

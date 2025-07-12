@@ -28,4 +28,9 @@ public class UserMenuDefaultServiceImpl extends ServiceImpl<UserMenuDefaultMappe
     public List<MenuVo> getUserMenuList(int userType) {
         return  userMenuDefaultMapper.getUserMenuList(userType);
     }
+
+    @Override
+    public List<MenuVo> getUserMenuListWithRole(Integer userId) {
+        return  userMenuDefaultMapper.getUserMenuListWithRole(userId);
+    }
 }

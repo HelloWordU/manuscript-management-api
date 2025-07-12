@@ -34,4 +34,10 @@ public class WriteSelectedTopicVo {
     @ApiModelProperty("最后更新时间")
     private Date lastModifyDate;
 
+    @ApiModelProperty("项目id")
+    private Integer projectId;
+
+    @ApiModelProperty("项目名称")
+    private String projectName;
+
 }

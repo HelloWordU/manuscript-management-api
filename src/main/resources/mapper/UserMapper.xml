@@ -3,7 +3,7 @@
 <mapper namespace="com.rz.manuscript.mapper.UserMapper">
     <select id="getAllUser"  resultType="com.rz.manuscript.pojo.vo.UserVo">
 SELECT u.id,u.name,u.real_name,GROUP_CONCAT(ug.name SEPARATOR ',') group_name
-FROM user u
+FROM t_user u
 LEFT JOIN user_group_relation ugr
 ON u.id= ugr.user_id
 LEFT JOIN user_group ug

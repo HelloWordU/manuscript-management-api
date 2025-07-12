@@ -10,7 +10,7 @@ spring:
 #      url: jdbc:mysql://192.168.1.207:3306/smart_report?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
 #      username: root
 #      password: System@123
-      url: jdbc:mysql://182.61.26.201:3306/manuscript?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+      url: jdbc:mysql://110.41.172.75:3306/manuscript?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
       username: root
       password: Snow2021$
       initial-size: 10
@@ -24,5 +24,3 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

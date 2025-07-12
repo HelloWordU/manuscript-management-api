@@ -8,6 +8,7 @@ import cn.hutool.poi.word.WordUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rz.manuscript.common.CacheManager;
+import com.rz.manuscript.common.LoginUserUtils;
 import com.rz.manuscript.common.ResultEntity;
 import com.rz.manuscript.common.ResultEntityList;
 import com.rz.manuscript.common.enums.PublishStateEnum;
@@ -88,20 +89,29 @@ public class ProjectController {
     }
 
     @PostMapping("/getPageList")
-    public ResultEntityList<ProjectVo> getPageList(@RequestBody ProjectRequest request) {
+    public ResultEntityList<ProjectVo> getPageList(@RequestBody ProjectRequest requestParam) {
         List<ProjectVo> res = new ArrayList<>();
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntityList<>(500, null, "无效的登录用户");
+
         LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
-        if (request.getProjectId() != null && request.getProjectId() > 0) {
-            wrapper.eq(Project::getId, request.getProjectId());
+        if (!currentLoginUser.getName().equals("admin")) {
+            String subQuery = "select project_id from group_project_relation where group_id in (select group_id from user_group_relation where user_id =" + currentLoginUser.getId() + ")";
+
+            wrapper.inSql(Project::getId, subQuery);
         }
-        if (request.getBeginDate() != null) {
-            wrapper.ge(Project::getBeginDate, request.getBeginDate());
+        if (requestParam.getProjectId() != null && requestParam.getProjectId() > 0) {
+            wrapper.eq(Project::getId, requestParam.getProjectId());
         }
-        if (request.getEndDate() != null) {
-            wrapper.le(Project::getEndDate, request.getEndDate());
+        if (requestParam.getBeginDate() != null) {
+            wrapper.ge(Project::getBeginDate, requestParam.getBeginDate());
+        }
+        if (requestParam.getEndDate() != null) {
+            wrapper.le(Project::getEndDate, requestParam.getEndDate());
         }
         wrapper.orderBy(true, true, Project::getCreateTime);
-        Page<Project> s = new Page<>(request.getPageIndex(), request.getPageSize());
+        Page<Project> s = new Page<>(requestParam.getPageIndex(), requestParam.getPageSize());
         Page<Project> page1 = iProjectService.page(s, wrapper);
         List<Project> list = page1.getRecords();
         if (list != null) {
@@ -173,5 +183,20 @@ public class ProjectController {
         return new ResultEntity<>(200, true, "操作成功");
     }
 
-
+    @PostMapping("/getUserProject")
+    @ApiOperation(value = "获取当前用户的项目")
+    public ResultEntityList<Project> getUserProject() {
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntityList<>(500, null, "无效的登录用户");
+        ResultEntityList<Project> res = new ResultEntityList<>();
+        List<Project> projectList = new ArrayList<>();
+        if (currentLoginUser.getName().equals("admin")) {
+            projectList = iProjectService.list();
+        } else {
+            projectList = iProjectService.getUserProject(currentLoginUser.getId());
+        }
+        res.setData(projectList);
+        return res;
+    }
 }

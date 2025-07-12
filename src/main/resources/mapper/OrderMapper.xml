@@ -19,6 +19,9 @@
             <if test="isComplete!=null">
                 and op.is_complete=#{isComplete}
             </if>
+            <if test="userId!=null">
+                and op.create_user=#{userId}
+            </if>
         </where>
         order by id desc
         LIMIT  #{startIndex},#{pageSize}
@@ -42,6 +45,9 @@
             </if>
             <if test="isComplete!=null">
                 and op.is_complete=#{isComplete}
+            </if>
+            <if test="userId!=null">
+                and op.create_user=#{userId}
             </if>
         </where>
     </select>

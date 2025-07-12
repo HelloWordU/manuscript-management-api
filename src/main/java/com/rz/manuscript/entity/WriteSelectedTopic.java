@@ -28,6 +28,8 @@ public class WriteSelectedTopic implements Serializable  {
     private String content;
     private Integer topicId;
     private Date lastModifyDate;
+    private Integer projectId;
+    private Integer createUser;
 
     // getter and setter methods for all fields
 }

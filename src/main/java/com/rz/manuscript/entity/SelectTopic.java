@@ -30,6 +30,9 @@ public class SelectTopic implements Serializable {
     private Integer typeId;
     private Boolean isSelected;
     private String industry;
+    private String content;
+    private Boolean isDownload;
+    private Integer createUser;
 
     // getter and setter methods for all fields
 }

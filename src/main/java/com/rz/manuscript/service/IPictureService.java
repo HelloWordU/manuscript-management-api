@@ -1,7 +1,9 @@
 package com.rz.manuscript.service;
 
+import com.rz.manuscript.common.ResultEntity;
 import com.rz.manuscript.entity.Picture;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rz.manuscript.pojo.request.BatchAddPictureRequest;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IPictureService extends IService<Picture> {
 
+    ResultEntity<Boolean> batchAdd(BatchAddPictureRequest batchAddPictureRequest);
 }

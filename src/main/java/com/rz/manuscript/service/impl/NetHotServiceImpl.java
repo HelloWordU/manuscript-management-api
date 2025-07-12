@@ -24,7 +24,7 @@ public class NetHotServiceImpl extends ServiceImpl<NetHotMapper, NetHot> impleme
 
     @Scheduled(fixedDelay=10*60*1000)
     public void refreshNetHot() {
-        log.error("开始执行网热热词刷新");
+       // log.info("开始执行网热热词刷新");
         NetHotRefreshResEntity netHotRefreshResEntity;
         try {
             netHotRefreshResEntity = JSON.parseObject(netHotRefreshClient.baiduHot(), NetHotRefreshResEntity.class);

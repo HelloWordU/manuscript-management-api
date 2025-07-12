@@ -2,6 +2,7 @@ package com.rz.manuscript.service;
 
 import com.rz.manuscript.entity.Manuscript;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rz.manuscript.entity.Project;
 import com.rz.manuscript.pojo.vo.GetManuscriptRequest;
 import com.rz.manuscript.pojo.vo.ManuscriptVo;
 import com.rz.manuscript.pojo.vo.MonitoringPlantformStatisticVo;
@@ -24,4 +25,8 @@ public interface IManuscriptService extends IService<Manuscript> {
     Integer getTotal(GetManuscriptRequest request);
 
     Integer getCustomerListTotal(GetManuscriptRequest request);
+
+    void calcRate(Manuscript entity);
+
+    void updateManuscriptCount(Project byId, Boolean isAdd);
 }

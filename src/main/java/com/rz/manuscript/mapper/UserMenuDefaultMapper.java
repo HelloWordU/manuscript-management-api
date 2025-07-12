@@ -19,4 +19,6 @@ import java.util.List;
 public interface UserMenuDefaultMapper extends BaseMapper<UserMenuDefault> {
 
     List<MenuVo> getUserMenuList(int userType);
+
+    List<MenuVo> getUserMenuListWithRole(Integer userId);
 }

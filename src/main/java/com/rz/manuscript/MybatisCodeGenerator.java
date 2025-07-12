@@ -23,7 +23,7 @@ public class MybatisCodeGenerator {
                             .pathInfo(Collections.singletonMap(OutputFile.entity, "D://manuscript")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("t_material,t_picture,t_picture_project") // 设置需要生成的表名
+                    builder.addInclude("t_ai_deform_manuscript","t_ai_write_manuscript") // 设置需要生成的表名
                             .addTablePrefix("t_", "c_","crm_"); // 设置过滤表前缀
                     builder.entityBuilder().enableLombok();
                 })

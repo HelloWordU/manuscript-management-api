@@ -45,9 +45,24 @@ public class Picture implements Serializable {
     private String imageUrl;
 
 
+    @ApiModelProperty("是否已下载")
+    private Boolean isDownload;
+
+
+
     @ApiModelProperty("项目id")
     private Long projectId;
 
-
+    @ApiModelProperty("搜索关键词")
+    private String searchKey;
+    //来源
+    @ApiModelProperty("来源")
+    private String origin;
+    //，网址，
+    @ApiModelProperty("网址")
+    private String sourceUrl;
+    // 标题
+    @ApiModelProperty("标题")
+    private String title;
 
 }

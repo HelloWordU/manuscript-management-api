@@ -80,4 +80,5 @@ public class Manuscript implements Serializable {
      * 0未发布 1 提交订单  2 已发布 3 已确认发布
      */
     private Integer publishState;
+    private Integer createUserId;
 }

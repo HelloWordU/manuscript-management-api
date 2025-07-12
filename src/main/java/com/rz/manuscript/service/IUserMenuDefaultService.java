@@ -17,4 +17,6 @@ import java.util.List;
 public interface IUserMenuDefaultService extends IService<UserMenuDefault> {
 
     List<MenuVo> getUserMenuList(int userType);
+
+    List<MenuVo> getUserMenuListWithRole(Integer id);
 }

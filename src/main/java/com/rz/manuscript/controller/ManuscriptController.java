@@ -1,19 +1,15 @@
 package com.rz.manuscript.controller;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rz.manuscript.client.RepeatRateClient;
-import com.rz.manuscript.common.CacheManager;
+import com.rz.manuscript.common.LoginUserUtils;
 import com.rz.manuscript.common.ResultEntity;
 import com.rz.manuscript.common.ResultEntityList;
 import com.rz.manuscript.common.enums.PublishStateEnum;
 import com.rz.manuscript.entity.*;
-import com.rz.manuscript.pojo.entity.CacheEntity;
 import com.rz.manuscript.pojo.vo.CalcRateRequest;
 import com.rz.manuscript.pojo.vo.GetManuscriptRequest;
 import com.rz.manuscript.pojo.vo.ManuscriptVo;
@@ -21,7 +17,6 @@ import com.rz.manuscript.pojo.vo.SaveRepeatRateRequest;
 import com.rz.manuscript.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
@@ -89,10 +84,17 @@ public class ManuscriptController {
 
     @GetMapping("/getWaitOrderList")
     public ResultEntityList<Manuscript> getWaitOrderList(@RequestParam(required = false) String q, @RequestParam Integer page, @RequestParam Integer projectId) {
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntityList<>(500, null, "无效的登录用户");
         LambdaQueryWrapper<Manuscript> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Manuscript::getProjectId, projectId);
         wrapper.eq(Manuscript::getPublishState, PublishStateEnum.未发布.getCode());
         wrapper.eq(Manuscript::getIsChecked, true);
+        if(!currentLoginUser.getName().equals("admin"))
+        {
+            wrapper.eq(Manuscript::getCreateUserId, currentLoginUser.getId());
+        }
         if (q != null && q.trim().length() != 0) {
             wrapper.like(Manuscript::getTitle, q);
         }
@@ -106,23 +108,38 @@ public class ManuscriptController {
     }
 
     @PostMapping("/getList")
-    public ResultEntityList<ManuscriptVo> getList(@RequestBody GetManuscriptRequest request) {
-        Integer total = iManuscriptService.getTotal(request);
+    public ResultEntityList<ManuscriptVo> getList(@RequestBody GetManuscriptRequest getManuscriptRequest) {
+
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntityList<>(500, null, "无效的登录用户");
+        if (!currentLoginUser.getName().equals("admin")) {
+            getManuscriptRequest.setUserId(currentLoginUser.getId());
+        }
+        Integer total = iManuscriptService.getTotal(getManuscriptRequest);
 
         List<ManuscriptVo> list = new ArrayList<>();
         if (total > 0) {
-            list = iManuscriptService.getList(request);
+            list = iManuscriptService.getList(getManuscriptRequest);
         }
 
 
         return new ResultEntityList<>(200, list, "获取成功", total.longValue());
 
     }
-
+    /**
+     * 稿件审核
+     */
     @PostMapping("/getCustomerList")
-    public ResultEntityList<ManuscriptVo> getCustomerList(@RequestBody GetManuscriptRequest request) {
-
-        List<ManuscriptVo> list = iManuscriptService.getCustomerList(request);
+    @ApiOperation(value = "稿件审核列表")
+    public ResultEntityList<ManuscriptVo> getCustomerList(@RequestBody GetManuscriptRequest getManuscriptRequest) {
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntityList<>(500, null, "无效的登录用户");
+        if (!currentLoginUser.getName().equals("admin")) {
+            getManuscriptRequest.setUserId(currentLoginUser.getId());
+        }
+        List<ManuscriptVo> list = iManuscriptService.getCustomerList(getManuscriptRequest);
         return new ResultEntityList<>(200, list, "获取成功");
 
     }
@@ -139,14 +156,17 @@ public class ManuscriptController {
 
 
     @PostMapping("/upload")
-    public ResultEntity<Boolean> upload(@RequestParam Integer projectId, MultipartHttpServletRequest request) {
-        projectId = Integer.parseInt(request.getParameter("projectId"));
-        Integer type = Integer.parseInt(request.getParameter("type") == null ? "0" : request.getParameter("type"));
-        Integer product = Integer.parseInt(request.getParameter("product") == null ? "0" : request.getParameter("product"));
+    public ResultEntity<Boolean> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntity<>(500, null, "无效的登录用户");
+        Integer projectId = Integer.parseInt(multipartHttpServletRequest.getParameter("projectId"));
+        Integer type = Integer.parseInt(multipartHttpServletRequest.getParameter("type") == null ? "0" : multipartHttpServletRequest.getParameter("type"));
+        Integer product = Integer.parseInt(multipartHttpServletRequest.getParameter("product") == null ? "0" : multipartHttpServletRequest.getParameter("product"));
         if (projectId == null || projectId < 1) {
             return new ResultEntity<>(0, true, "无效的项目");
         }
-        Map<String, MultipartFile> fileMap = request.getFileMap();
+        Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
         if (fileMap == null || fileMap.isEmpty()) {
             return new ResultEntity<>(0, true, "无效的文件");
         }
@@ -197,10 +217,11 @@ public class ManuscriptController {
                 entity.setTypeId(type);
                 entity.setProductId(product);
                 entity.setProjectId(projectId);
+                entity.setCreateUserId(currentLoginUser.getId());
                 iManuscriptService.save(entity);
-                calcRate(entity);
+                iManuscriptService.calcRate(entity);
                 Project byId = iProjectService.getById(projectId);
-                updateManuscriptCount(byId, true);
+                iManuscriptService.updateManuscriptCount(byId, true);
             } catch (Exception e) {
                 uploadInfo += key + uploadFile.getOriginalFilename() + "读取文件失败" + e.getMessage();
                 log.error("读取文件失败", e);
@@ -209,38 +230,21 @@ public class ManuscriptController {
         return new ResultEntity<>(200, true, "上传成功!" + uploadInfo);
     }
 
-    private void calcRate(Manuscript entity) {
-        CalcRateRequest request = new CalcRateRequest();
-        request.setContext(entity.getContent());
-        request.setManuscriptId(entity.getId());
-        repeatRateClient.calcRate(request);
-    }
 
     /**
      * 更新稿件上传数量
      *
-     * @param byId
+     * @param id
      */
-    @Synchronized
-    private void updateManuscriptCount(Project byId, Boolean isAdd) {
-        if (byId != null) {
-            if (isAdd) {
-                byId.setManuscriptUploadCount(byId.getManuscriptUploadCount() + 1);
-            } else {
-                byId.setManuscriptUploadCount(byId.getManuscriptUploadCount() - 1);
-            }
-            iProjectService.updateById(byId);
-        }
 
-    }
 
     @PostMapping("/delete")
-    @ApiOperation(value = "删除用户")
+    @ApiOperation(value = "删除稿件")
     public ResultEntity<Boolean> delete(@RequestParam Integer id) {
         Manuscript m = iManuscriptService.getById(id);
         if (m != null) {
             Project byId = iProjectService.getById(m.getProjectId());
-            updateManuscriptCount(byId, false);
+            iManuscriptService.updateManuscriptCount(byId, false);
             iManuscriptService.removeById(id);
         }
 
@@ -250,6 +254,9 @@ public class ManuscriptController {
 
     @PostMapping("/single-upload")
     public ResultEntity<Boolean> singleUpload(@RequestParam Integer id, @RequestParam MultipartFile uploadFile) {
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntity<>(500, null, "无效的登录用户");
         if (id == null || id < 1) {
             return new ResultEntity<>(0, true, "无效的稿件");
         }
@@ -306,8 +313,9 @@ public class ManuscriptController {
             entity.setTitle(title);
             entity.setSavePath(saveName);
             entity.setUpdateTime(new Date());
+            entity.setCreateUserId(currentLoginUser.getId());
             iManuscriptService.updateById(entity);
-            calcRate(entity);
+            iManuscriptService.calcRate(entity);
         } catch (Exception e) {
             log.error("读取文件失败", e);
             return new ResultEntity<>(0, true, "上传失败!" + e.getMessage());
@@ -430,7 +438,7 @@ public class ManuscriptController {
                 calcManuscriptPublishCount(one.getOrderId());
             }
 
-//            Order order = iOrderService.getById(one.getOrderId());
+//            Order order = iOrderService.getVoById(one.getOrderId());
 //            order.setManuscriptPublishCount(order.getManuscriptPublishCount() + 1);
 //            iOrderService.updateById(order);
             //   }

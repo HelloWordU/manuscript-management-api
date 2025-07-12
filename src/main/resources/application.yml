@@ -17,3 +17,9 @@ spring:
       uri: neo4j://109.244.159.194:7687
   profiles:
     active: dev
+
+logging:
+  config: classpath:logback.xml
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 文件根路径 -->
+    <property name="LOG.PATH" value="/data/logs"/>
+    <!-- info级别输出路径 -->
+    <property name="LOG.FILE.INFO" value="${LOG.PATH}/manuscript.log"/>
+    <!-- 日志大小 -->
+    <property name="LOG.SIZE" value="100MB"></property>
+    <!-- 日志输出格式 -->
+    <property name="LOG.PATTERN" value="%d{HH:mm:ss.SSS} [%t] %-5level %logger - %msg%n"/>
+    <!-- 滚动日志 -->
+    <property name="LOG.FILE.NAME" value="manuscript.%d{yyyy-MM-dd}.%i.log"/>
+    <!-- 输出日志到控制台 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>${LOG.PATTERN}</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 系统日志输出，作为单独文件保存-->
+    <appender name="sys" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG.FILE.INFO}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <fileNamePattern>${LOG.PATH}/${LOG.FILE.NAME}</fileNamePattern>
+            <!--日志文件大小-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${LOG.SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG.PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <Logger name="com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder" level="DEBUG"/>
+    <Logger name="com.rz.manuscript" level="ERROR"/>
+    <Logger name="com.rz.manuscript.mapper" level="ERROR"/>
+    <logger name="com.ibatis" level="ERROR"/>
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="ERROR"/>
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="ERROR"/>
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="ERROR"/>
+    <logger name="java.sql.Connection" level="ERROR"/>
+    <logger name="java.sql.Statement" level="ERROR"/>
+    <logger name="java.sql.PreparedStatement" level="ERROR"/>
+    <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏-->
+    <!--	<Logger name="com.easydatalink.tech" level="INFO"/>-->
+    <!--    <Logger name="org.springframework" level="INFO"/>-->
+    <!--    <Logger name="org.springframework.beans.factory.aspectj" level="WARN"/>-->
+    <!--    <Logger name="org.springframework.transaction.interceptor" level="WARN"/>-->
+    <!--    <Logger name="org.springframework.beans.factory.support" level="WARN"/>-->
+    <!--    <Logger name="org.springframework.web.servlet" level="DEBUG"/>-->
+    <!--    <Logger name="org.springframework.transaction" level="WARN"/>-->
+    <!--    <Logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="WARN"/>-->
+    <!--    <Logger name="org.springframework.transaction.support.AbstractPlatformTransactionManager" level="WARN"/>-->
+    <!--    <Logger name="org.springframework.security" level="WARN"/>-->
+    <!--    <Logger name="org.apache.commons" level="WARN"/>-->
+    <!--    <Logger name="org.apache.kafka" level="WARN"/>-->
+    <!--    <Logger name="org.apache.http" level="ERROR"/>-->
+    <!--    <Logger name="httpclient" level="ERROR"/>-->
+    <!--    <Logger name="net.sf.ehcache" level="WARN"/>-->
+    <!--    <Logger name="org.apache.zookeeper" level="WARN"/>-->
+    <!--    <Logger name="org.I0Itec" level="WARN"/>-->
+    <!--    <Logger name="org.mongodb.driver" level="INFO"/>-->
+    <!--    <Logger name="org.quartz.core" level="INFO"/>-->
+    <!--    <Logger name="io.netty" level="INFO"/>-->
+    <!--    <Logger name="com.google" level="WARN"/>-->
+    <!--    &lt;!&ndash; mybatis日志输出 &ndash;&gt;-->
+    <!--    <logger name="com.ibatis" level="DEBUG"/>-->
+    <!--    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG"/>-->
+    <!--    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"/>-->
+    <!--    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG"/>-->
+    <!--    <logger name="java.sql.Connection" level="DEBUG"/>-->
+    <!--    <logger name="java.sql.Statement" level="DEBUG"/>-->
+    <!--    <logger name="java.sql.PreparedStatement" level="DEBUG"/>-->
+    <!--    <logger name="com.es.elsaticsearch" level="DEBUG"/>-->
+    <!--    <logger name="com.easydatalink.tech.dubbo.registry.NacosSzyhRegistry" level="error"/>-->
+    <root level="ERROR">
+        <appender-ref ref="sys"/>
+        <appender-ref ref="CONSOLE"/>
+        <!--  <appender-ref ref="KafkaAppender" /> -->
+    </root>
+
+</configuration>

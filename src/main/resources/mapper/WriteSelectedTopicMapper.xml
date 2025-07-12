@@ -3,13 +3,20 @@
 <mapper namespace="com.rz.manuscript.mapper.WriteSelectedTopicMapper">
     <select id="getList" parameterType="com.rz.manuscript.pojo.vo.WriteSelectedTopicGetListRequest"
             resultType="com.rz.manuscript.pojo.vo.WriteSelectedTopicVo">
-        SELECT twst.id,twst.title,twst.char_count,twst.is_complete, twst.last_modify_date from t_write_selected_topic twst
+        SELECT twst.id,twst.title,twst.char_count,
+               twst.is_complete, twst.last_modify_date , twst.project_id,
+               p.name as project_name
+        from t_write_selected_topic twst
+        left join project p on  twst.project_id = p.id
         <where>
             <if test="isComplete!=null  ">
                 and twst.is_complete = #{isComplete}
             </if>
             <if test="title!=null and title!=''">
                 and twst.title like concat('%',#{title},'%')
+            </if>
+            <if test="userId!=null">
+                and twst.create_user = #{userId}
             </if>
         </where>
         order by id desc

@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -39,6 +38,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/index")
@@ -93,8 +93,8 @@ public class IndexController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();//io流
             ImageIO.write(image, "png", baos);//写入流中
             byte[] bytes = baos.toByteArray();//转换成字节
-            BASE64Encoder encoder = new BASE64Encoder();
-            String png_base64 = encoder.encodeBuffer(bytes).trim();//转换成base64串
+
+            String png_base64 = Base64.getEncoder().encodeToString(bytes);//转换成base64串
             png_base64 = png_base64.replaceAll("\n", "").replaceAll("\r", "");//删除 \r\n
             res.setCaptchaData("data:image/png;base64," + png_base64);
             res.setCaptchaAccessToken(cacheKey);

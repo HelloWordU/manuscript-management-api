@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rz.manuscript.mapper.ProjectMapper">
 
+    <select id="getUserProject" resultType="com.rz.manuscript.entity.Project">
+        selecgt * from project
+            where id in
+            (select project_id from group_project_relation where group_id in (
+              select group_id from user_group_relation where user_id = #{userId}
+            ))
+    </select>
 </mapper>

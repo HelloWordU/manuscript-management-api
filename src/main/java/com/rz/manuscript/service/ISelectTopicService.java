@@ -14,7 +14,7 @@ import java.util.List;
 public interface ISelectTopicService extends IService<SelectTopic> {
     List<SelectTopicVo> getList(SelectTopicGetListRequest request);
 
-    ResultEntity<Boolean> addToWrite(Integer id);
+    ResultEntity<Boolean> addToWrite(Integer id, Integer projectId,Integer userId);
 
-    void uploadFile(MultipartFile file);
+    void uploadFile(MultipartFile file,Integer userId);
 }

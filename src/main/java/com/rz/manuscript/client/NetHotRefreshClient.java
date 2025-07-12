@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(url = "109.244.159.194:9900", name = "NetHotRefreshClient")
+@FeignClient(url = "109.244.159.194:8000", name = "NetHotRefreshClient")
 public interface NetHotRefreshClient {
     @RequestMapping(value = "/weibo/getHot/", method = RequestMethod.GET)
     String weiboHot();

@@ -3,6 +3,8 @@ package com.rz.manuscript.service;
 import com.rz.manuscript.entity.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IProjectService extends IService<Project> {
 
+    List<Project> getUserProject(Integer userId);
 }

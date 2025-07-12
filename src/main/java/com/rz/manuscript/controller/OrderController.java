@@ -2,6 +2,7 @@ package com.rz.manuscript.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.rz.manuscript.common.CacheManager;
+import com.rz.manuscript.common.LoginUserUtils;
 import com.rz.manuscript.common.ResultEntity;
 import com.rz.manuscript.common.ResultEntityList;
 import com.rz.manuscript.common.enums.PublishStateEnum;
@@ -40,12 +41,17 @@ public class OrderController {
     private IWebMessageService iWebMessageService;
 
     @PostMapping("/getList")
-    public ResultEntityList<OrderVo> getList(@RequestBody OrderGetListRequest request) {
-
-        Long total = iOrderService.getListTotal(request);
+    public ResultEntityList<OrderVo> getList(@RequestBody OrderGetListRequest orderGetListRequest) {
+        User currentLoginUser = LoginUserUtils.getCurrentLoginUser(request);
+        if (currentLoginUser == null)
+            return new ResultEntityList<>(500, null, "无效的登录用户");
+        if (!currentLoginUser.getName().equals("admin")) {
+            orderGetListRequest.setUserId(currentLoginUser.getId());
+        }
+        Long total = iOrderService.getListTotal(orderGetListRequest);
         List<OrderVo> resData = new ArrayList<>();
         if (total > 0) {
-            resData = iOrderService.getList(request);
+            resData = iOrderService.getList(orderGetListRequest);
 
         }
         ResultEntityList<OrderVo> res = new ResultEntityList<>(200, resData, "获取成功");

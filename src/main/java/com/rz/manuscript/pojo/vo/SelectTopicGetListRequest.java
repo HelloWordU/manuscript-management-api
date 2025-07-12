@@ -31,5 +31,6 @@ public class SelectTopicGetListRequest {
     private Integer pageSize;
     private Integer pageIndex;
     private Integer startIndex;
+    private Integer userId;
 }
 

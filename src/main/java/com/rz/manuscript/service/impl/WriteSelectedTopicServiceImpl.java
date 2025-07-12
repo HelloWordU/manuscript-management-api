@@ -33,7 +33,7 @@ public class WriteSelectedTopicServiceImpl extends ServiceImpl<WriteSelectedTopi
     }
 
     @Override
-    public WriteSelectedTopicVo getById(int id) {
+    public WriteSelectedTopicVo getVoById(int id) {
         return writeSelectTopicMapper.getVoById(id);
     }
 
@@ -48,6 +48,16 @@ public class WriteSelectedTopicServiceImpl extends ServiceImpl<WriteSelectedTopi
         }
     }
 
+    @Override
+    public List<String> getContentCategory(GetContentKeysRequest request) {
+        ResultEntityList<String> contentKeys = sentenceCenterClient.getContentCategory(request);
+        if (contentKeys.getCode().equals(200)) {
+            return contentKeys.getData();
+        } else {
+            log.error("getContentKeys res:" + JSON.toJSONString(contentKeys));
+            return new ArrayList<>();
+        }
+    }
     private void setRequestPage(WriteSelectedTopicGetListRequest request) {
         if (request.getPageIndex() == null || request.getPageIndex() < 1)
             request.setPageIndex(1);

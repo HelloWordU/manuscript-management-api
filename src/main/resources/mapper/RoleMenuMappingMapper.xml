@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rz.manuscript.mapper.RoleMenuMappingMapper">
+
+    <select id="queryVo" resultType="com.rz.manuscript.pojo.vo.RoleMenuMappingVo">
+        select trmm.id,trmm.role_id,trmm.menu_id,tr.name as role_name,m.name as menu_name
+        from t_role_menu_mapping trmm
+        left join t_role tr on trmm.role_id = tr.id
+        left join menu m on trmm.menu_id = m.id
+        <where>
+            <if test="roleIds!=null">
+                and trmm.role_id in
+                <foreach collection="roleIds" open="(" close=")" index="index" item="roleId" separator=",">
+                    #{roleId}
+                </foreach>
+
+            </if>
+            <if test="roleId!=null">
+                and trmm.role_id = #{roleId}
+            </if>
+        </where>
+    </select>
+</mapper>
